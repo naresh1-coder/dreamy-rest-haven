@@ -1,7 +1,7 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
+import herobg from '../assets/room-bed-design-interior-wallpaper-preview.jpg';
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -45,14 +45,14 @@ const Hero = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.3
-      }
-    }
+        delayChildren: 0.3,
+      },
+    },
   };
 
   const item = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+    show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
   return (
@@ -64,12 +64,11 @@ const Hero = () => {
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-navy/40 to-navy/10 dark:from-navy-dark/70 dark:to-navy-dark/40 z-10"></div>
         <motion.div 
-          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1587922546307-776227941871?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2592&q=80')] 
-                   bg-cover bg-center z-0"
+          className="absolute inset-0 bg-cover bg-center z-0"
           initial={{ scale: 1.2, opacity: 0.5 }}
           animate={{ scale: 1.1, opacity: 1 }}
           transition={{ duration: 1.5 }}
-          style={{ transformOrigin: "center center" }}
+          style={{ backgroundImage: `url(${herobg})`, transformOrigin: "center center" }}
         ></motion.div>
       </div>
 
@@ -111,7 +110,7 @@ const Hero = () => {
               className="btn-gold w-full sm:w-auto hover:scale-105 transition-transform"
               whileHover={{ 
                 scale: 1.05,
-                boxShadow: "0px 10px 20px rgba(212, 175, 55, 0.2)"
+                boxShadow: "0px 10px 20px rgba(212, 175, 55, 0.2)",
               }}
               whileTap={{ scale: 0.98 }}
             >
@@ -122,7 +121,7 @@ const Hero = () => {
               className="btn-secondary border-white text-white hover:bg-white/10 w-full sm:w-auto"
               whileHover={{ 
                 scale: 1.05,
-                backgroundColor: "rgba(255, 255, 255, 0.1)"
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
               }}
               whileTap={{ scale: 0.98 }}
             >
@@ -140,11 +139,11 @@ const Hero = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ 
           opacity: isLoaded ? 1 : 0, 
-          y: isLoaded ? 0 : -20
+          y: isLoaded ? 0 : -20,
         }}
         transition={{ 
           delay: 1.2,
-          duration: 0.5
+          duration: 0.5,
         }}
       >
         <motion.span 
@@ -153,7 +152,7 @@ const Hero = () => {
           transition={{ 
             repeat: Infinity,
             duration: 1.5,
-            ease: "easeInOut" 
+            ease: "easeInOut", 
           }}
         >
           Scroll Down
@@ -163,7 +162,7 @@ const Hero = () => {
           transition={{ 
             repeat: Infinity,
             duration: 1.5,
-            ease: "easeInOut" 
+            ease: "easeInOut", 
           }}
         >
           <ChevronDown size={20} />

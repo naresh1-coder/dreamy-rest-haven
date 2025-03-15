@@ -62,7 +62,7 @@ const Benefits = () => {
           {/* Left Side - Image */}
           <div className={`relative rounded-lg overflow-hidden ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
             <img 
-              src="https://images.unsplash.com/photo-1626900959042-607ded5fbb72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
+              src="https://i.pinimg.com/736x/5f/05/76/5f05764a2fa82a252f659b9071d53777.jpg" 
               alt="ANR Mattress craftsmanship" 
               className="w-full h-full object-cover rounded-lg"
               style={{ height: '600px' }}

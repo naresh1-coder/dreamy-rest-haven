@@ -19,7 +19,7 @@ const ProductCategories = () => {
       id: 2,
       name: 'Ortho Mattress',
       description: 'Designed for proper spine alignment and pressure point relief.',
-      image: 'https://images.unsplash.com/photo-1634646598897-675355d853da?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
+      image: 'https://m.media-amazon.com/images/I/71QioXAwb-L._SX679_.jpg',
       features: ['Firm Support', 'Posture Alignment', 'Pain Relief'],
     },
     {
@@ -33,7 +33,7 @@ const ProductCategories = () => {
       id: 4,
       name: 'Premium Mattress',
       description: 'Our luxury hybrid model combining the best of all technologies.',
-      image: 'https://images.unsplash.com/photo-1671726203386-98cb355d33e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
+      image: 'https://sleepopolis.com/wp-content/uploads/2022/09/P1051102.jpg',
       features: ['Ultimate Comfort', 'Premium Materials', '10-Year Warranty'],
     },
   ];

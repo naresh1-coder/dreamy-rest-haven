@@ -14,7 +14,7 @@ const SizeGuide = () => {
       dimensions: '38" × 75"',
       idealFor: 'Children or Single Adults',
       roomSize: 'Small Bedrooms',
-      image: 'https://images.unsplash.com/photo-1505693311870-30865196a390?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+      image: 'https://i.pinimg.com/736x/2d/7e/ac/2d7eac9118cd1cefd441d1e5ff5789d5.jpg',
     },
     {
       id: 'queen',
