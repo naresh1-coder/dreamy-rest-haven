@@ -8,6 +8,7 @@ import Reviews from '../components/Reviews';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
+import { ThemeProvider } from '../components/ThemeProvider';
 import { useEffect } from 'react';
 
 const Index = () => {
@@ -35,17 +36,19 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white overflow-hidden">
-      <Header />
-      <Hero />
-      <ProductCategories />
-      <SizeGuide />
-      <Benefits />
-      <Reviews />
-      <Contact />
-      <Footer />
-      <ScrollToTop />
-    </div>
+    <ThemeProvider>
+      <div className="min-h-screen bg-white dark:bg-navy-dark text-navy dark:text-white overflow-hidden transition-colors duration-300">
+        <Header />
+        <Hero />
+        <ProductCategories />
+        <SizeGuide />
+        <Benefits />
+        <Reviews />
+        <Contact />
+        <Footer />
+        <ScrollToTop />
+      </div>
+    </ThemeProvider>
   );
 };
 

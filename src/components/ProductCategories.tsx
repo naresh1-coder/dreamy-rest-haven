@@ -60,7 +60,7 @@ const ProductCategories = () => {
   }, []);
 
   return (
-    <section id="products" ref={sectionRef} className="py-20 bg-grey-light relative overflow-hidden">
+    <section id="products" ref={sectionRef} className="py-20 bg-grey-light dark:bg-navy-light relative overflow-hidden">
       {/* Decorative Elements */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-r from-gold/5 to-transparent rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
       <div className="absolute bottom-0 right-0 w-64 h-64 bg-gradient-to-l from-navy/5 to-transparent rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
@@ -69,8 +69,8 @@ const ProductCategories = () => {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-gold text-sm font-medium tracking-wider uppercase">Our Collection</span>
-          <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">Premium Mattress Types</h2>
-          <p className="text-navy/70 text-balance">
+          <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4 dark:text-white">Premium Mattress Types</h2>
+          <p className="text-navy/70 dark:text-white/70 text-balance">
             Discover our range of premium mattresses designed to suit your specific sleeping preferences and needs.
           </p>
         </div>
@@ -82,7 +82,7 @@ const ProductCategories = () => {
               key={product.id}
               className={`card group hover:translate-y-[-5px] ${
                 isVisible ? 'animate-fade-in' : 'opacity-0'
-              }`}
+              } dark:bg-navy dark:border-navy-light`}
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="relative overflow-hidden h-56">
@@ -97,19 +97,19 @@ const ProductCategories = () => {
                 </div>
               </div>
               <div className="p-6">
-                <p className="text-navy/70 mb-4 text-balance">{product.description}</p>
+                <p className="text-navy/70 dark:text-white/70 mb-4 text-balance">{product.description}</p>
                 <div className="mb-6">
-                  <h4 className="text-sm font-semibold mb-2 text-navy/90">Features:</h4>
+                  <h4 className="text-sm font-semibold mb-2 text-navy/90 dark:text-white/90">Features:</h4>
                   <ul className="space-y-1">
                     {product.features.map((feature, i) => (
-                      <li key={i} className="flex items-start text-sm text-navy/70">
+                      <li key={i} className="flex items-start text-sm text-navy/70 dark:text-white/70">
                         <span className="text-gold mr-2">•</span>
                         {feature}
                       </li>
                     ))}
                   </ul>
                 </div>
-                <button className="flex items-center text-navy hover:text-gold transition-colors font-medium group">
+                <button className="flex items-center text-navy dark:text-white hover:text-gold dark:hover:text-gold transition-colors font-medium group">
                   <span>Explore</span>
                   <ArrowRight size={16} className="ml-2 transition-transform group-hover:translate-x-1" />
                 </button>
@@ -120,7 +120,7 @@ const ProductCategories = () => {
 
         {/* CTA */}
         <div className="text-center mt-16">
-          <button className="btn-primary">
+          <button className="btn-primary dark:bg-gold dark:hover:bg-gold-dark">
             View All Products
           </button>
         </div>

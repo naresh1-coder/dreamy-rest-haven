@@ -1,11 +1,14 @@
 
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, User, ShoppingCart } from 'lucide-react';
+import { Menu, X, ChevronDown, User, ShoppingCart, Moon, Sun } from 'lucide-react';
+import { useTheme } from './ThemeProvider';
+import { Toggle } from './ui/toggle';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const { theme, toggleTheme } = useTheme();
 
   // Handle scroll events
   useEffect(() => {
@@ -55,7 +58,7 @@ const Header = () => {
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' 
+          ? 'bg-white/90 dark:bg-navy-dark/90 backdrop-blur-md shadow-sm py-3' 
           : 'bg-transparent py-5'
       }`}
     >
@@ -69,7 +72,7 @@ const Header = () => {
             scrollToSection('home');
           }}
         >
-          <span className="font-serif text-2xl font-bold text-navy">
+          <span className="font-serif text-2xl font-bold text-navy dark:text-white">
             ANR<span className="text-gold">Mattress</span>
           </span>
         </a>
@@ -82,7 +85,7 @@ const Header = () => {
               e.preventDefault();
               scrollToSection('home');
             }}
-            className={`nav-link ${activeSection === 'home' ? 'active' : ''}`}
+            className={`nav-link text-navy dark:text-white ${activeSection === 'home' ? 'active' : ''}`}
           >
             Home
           </a>
@@ -92,7 +95,7 @@ const Header = () => {
               e.preventDefault();
               scrollToSection('products');
             }}
-            className={`nav-link ${activeSection === 'products' ? 'active' : ''}`}
+            className={`nav-link text-navy dark:text-white ${activeSection === 'products' ? 'active' : ''}`}
           >
             Products
           </a>
@@ -102,7 +105,7 @@ const Header = () => {
               e.preventDefault();
               scrollToSection('size-guide');
             }}
-            className={`nav-link ${activeSection === 'size-guide' ? 'active' : ''}`}
+            className={`nav-link text-navy dark:text-white ${activeSection === 'size-guide' ? 'active' : ''}`}
           >
             Size Guide
           </a>
@@ -112,7 +115,7 @@ const Header = () => {
               e.preventDefault();
               scrollToSection('benefits');
             }}
-            className={`nav-link ${activeSection === 'benefits' ? 'active' : ''}`}
+            className={`nav-link text-navy dark:text-white ${activeSection === 'benefits' ? 'active' : ''}`}
           >
             About Us
           </a>
@@ -122,7 +125,7 @@ const Header = () => {
               e.preventDefault();
               scrollToSection('reviews');
             }}
-            className={`nav-link ${activeSection === 'reviews' ? 'active' : ''}`}
+            className={`nav-link text-navy dark:text-white ${activeSection === 'reviews' ? 'active' : ''}`}
           >
             Reviews
           </a>
@@ -132,7 +135,7 @@ const Header = () => {
               e.preventDefault();
               scrollToSection('contact');
             }}
-            className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}
+            className={`nav-link text-navy dark:text-white ${activeSection === 'contact' ? 'active' : ''}`}
           >
             Contact
           </a>
@@ -140,27 +143,53 @@ const Header = () => {
 
         {/* Desktop Action Buttons */}
         <div className="hidden md:flex items-center space-x-4">
-          <button className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-grey-light transition-colors">
-            <ShoppingCart className="w-5 h-5 text-navy" />
+          <Toggle 
+            aria-label="Toggle theme"
+            pressed={theme === 'dark'}
+            onPressedChange={toggleTheme}
+            className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-grey-light dark:hover:bg-navy-light transition-colors"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-5 h-5 text-gold" />
+            ) : (
+              <Moon className="w-5 h-5 text-navy" />
+            )}
+          </Toggle>
+          <button className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-grey-light dark:hover:bg-navy-light transition-colors">
+            <ShoppingCart className="w-5 h-5 text-navy dark:text-white" />
           </button>
-          <button className="flex items-center space-x-2 btn-secondary py-2">
+          <button className="flex items-center space-x-2 btn-secondary py-2 dark:border-white dark:text-white dark:hover:bg-white/10">
             <User className="w-4 h-4" />
             <span>Login</span>
           </button>
         </div>
 
         {/* Mobile Menu Button */}
-        <button 
-          className="md:hidden p-2 text-navy focus:outline-none"
-          onClick={toggleMobileMenu}
-        >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="md:hidden flex items-center space-x-2">
+          <Toggle 
+            aria-label="Toggle theme"
+            pressed={theme === 'dark'}
+            onPressedChange={toggleTheme}
+            className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-grey-light dark:hover:bg-navy-light transition-colors"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-5 h-5 text-gold" />
+            ) : (
+              <Moon className="w-5 h-5 text-navy" />
+            )}
+          </Toggle>
+          <button 
+            className="p-2 text-navy dark:text-white focus:outline-none"
+            onClick={toggleMobileMenu}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       <div 
-        className={`fixed inset-0 bg-white z-40 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-0 bg-white dark:bg-navy-dark z-40 transform transition-transform duration-300 ease-in-out ${
           mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         } md:hidden pt-20 px-6`}
       >
@@ -171,7 +200,7 @@ const Header = () => {
               e.preventDefault();
               scrollToSection('home');
             }}
-            className="py-2 border-b border-grey-light"
+            className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
           >
             Home
           </a>
@@ -181,7 +210,7 @@ const Header = () => {
               e.preventDefault();
               scrollToSection('products');
             }}
-            className="py-2 border-b border-grey-light"
+            className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
           >
             Products
           </a>
@@ -191,7 +220,7 @@ const Header = () => {
               e.preventDefault();
               scrollToSection('size-guide');
             }}
-            className="py-2 border-b border-grey-light"
+            className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
           >
             Size Guide
           </a>
@@ -201,7 +230,7 @@ const Header = () => {
               e.preventDefault();
               scrollToSection('benefits');
             }}
-            className="py-2 border-b border-grey-light"
+            className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
           >
             About Us
           </a>
@@ -211,7 +240,7 @@ const Header = () => {
               e.preventDefault();
               scrollToSection('reviews');
             }}
-            className="py-2 border-b border-grey-light"
+            className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
           >
             Reviews
           </a>
@@ -221,13 +250,13 @@ const Header = () => {
               e.preventDefault();
               scrollToSection('contact');
             }}
-            className="py-2 border-b border-grey-light"
+            className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
           >
             Contact
           </a>
           <div className="flex space-x-4 pt-4">
-            <button className="btn-secondary flex-1">Login</button>
-            <button className="btn-primary flex-1">Sign Up</button>
+            <button className="btn-secondary flex-1 dark:border-white dark:text-white dark:hover:bg-white/10">Login</button>
+            <button className="btn-primary flex-1 dark:bg-gold dark:hover:bg-gold-dark">Sign Up</button>
           </div>
         </nav>
       </div>
