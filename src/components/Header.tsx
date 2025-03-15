@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { Menu, X, User, ShoppingCart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -8,6 +8,7 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const location = useLocation();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,6 +57,15 @@ const Header = () => {
     setMobileMenuOpen(false);
   };
 
+  // Functions to handle navigation
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleSignupClick = () => {
+    navigate('/signup');
+  };
+
   const navItems = [
     { id: 'home', label: 'Home', path: '/' },
     { id: 'products', label: 'Products', path: '/products' },
@@ -86,7 +96,12 @@ const Header = () => {
           <motion.button className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-grey-light transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
             <ShoppingCart className="w-5 h-5 text-navy" />
           </motion.button>
-          <motion.button className="flex items-center space-x-2 btn-secondary py-2" whileHover={{ scale: 1.05, boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)" }} whileTap={{ scale: 0.98 }}>
+          <motion.button 
+            className="flex items-center space-x-2 btn-secondary py-2" 
+            whileHover={{ scale: 1.05, boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)" }} 
+            whileTap={{ scale: 0.98 }} 
+            onClick={handleLoginClick} // Navigate on click
+          >
             <User className="w-4 h-4" />
             <span>Login</span>
           </motion.button>
@@ -109,8 +124,8 @@ const Header = () => {
                 </Link>
               ))}
               <div className="flex space-x-4 pt-4">
-                <button className="btn-secondary flex-1">Login</button>
-                <button className="btn-primary flex-1">Sign Up</button>
+                <button className="btn-secondary flex-1" onClick={handleLoginClick}>Login</button>
+                <button className="btn-primary flex-1" onClick={handleSignupClick}>Sign Up</button>
               </div>
             </nav>
           </motion.div>

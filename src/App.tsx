@@ -12,7 +12,11 @@ import AboutUs from "./pages/AboutUs";
 import ReviewsPage from "./pages/ReviewsPage";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import { AnimatePresence } from "framer-motion";
+import path from 'path';
+
 
 const queryClient = new QueryClient();
 
@@ -31,6 +35,8 @@ const App = () => (
               <Route path="/about" element={<AboutUs />} />
               <Route path="/reviews" element={<ReviewsPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/login" element={<Login/>}/>
+              <Route path="/signup" element={<Signup/>}/>
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
