@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Header from '../components/Header';
@@ -11,7 +10,6 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
 import FloatingCTA from '../components/FloatingCTA';
-import { ThemeProvider } from '../components/ThemeProvider';
 import { useEffect } from 'react';
 
 const Index = () => {
@@ -46,12 +44,6 @@ const Index = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Limited Time Offer Banner */}
-      <div className="sticky top-0 z-[60] bg-gold text-white py-2 px-4 flex items-center justify-center text-sm font-medium">
-        <span className="mr-2">🔥</span>
-        <p>Limited Time Offer: Get 20% Off on Latex Mattresses! Use Code: SLEEP20</p>
-      </div>
-      
       <Header />
       <Hero />
       
