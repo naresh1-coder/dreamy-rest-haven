@@ -1,14 +1,17 @@
 
 import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, ShoppingCart, Moon, Sun } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { Toggle } from './ui/toggle';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
 
   // Handle scroll events
   useEffect(() => {
@@ -35,6 +38,23 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Update active section based on current route
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setActiveSection('home');
+    } else if (location.pathname.includes('/products')) {
+      setActiveSection('products');
+    } else if (location.pathname.includes('/size-guide')) {
+      setActiveSection('size-guide');
+    } else if (location.pathname.includes('/about')) {
+      setActiveSection('about');
+    } else if (location.pathname.includes('/reviews')) {
+      setActiveSection('reviews');
+    } else if (location.pathname.includes('/contact')) {
+      setActiveSection('contact');
+    }
+  }, [location]);
+
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
@@ -43,16 +63,14 @@ const Header = () => {
     setMobileMenuOpen(false);
   };
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      // Close mobile menu
-      closeMobileMenu();
-      
-      // Scroll to element
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const navItems = [
+    { id: 'home', label: 'Home', path: '/' },
+    { id: 'products', label: 'Products', path: '/products' },
+    { id: 'size-guide', label: 'Size Guide', path: '/size-guide' },
+    { id: 'about', label: 'About Us', path: '/about' },
+    { id: 'reviews', label: 'Reviews', path: '/reviews' },
+    { id: 'contact', label: 'Contact', path: '/contact' },
+  ];
 
   return (
     <header 
@@ -61,205 +79,154 @@ const Header = () => {
           ? 'bg-white/90 dark:bg-navy-dark/90 backdrop-blur-md shadow-sm py-3' 
           : 'bg-transparent py-5'
       }`}
+      style={{ top: location.pathname === '/' ? '28px' : '0' }}
     >
       <div className="container-padding flex items-center justify-between">
         {/* Logo */}
-        <a 
-          href="#home" 
+        <Link 
+          to="/"
           className="flex items-center"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollToSection('home');
-          }}
         >
-          <span className="font-serif text-2xl font-bold text-navy dark:text-white">
+          <motion.span 
+            className="font-serif text-2xl font-bold text-navy dark:text-white"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
             ANR<span className="text-gold">Mattress</span>
-          </span>
-        </a>
+          </motion.span>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-1">
-          <a 
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('home');
-            }}
-            className={`nav-link text-navy dark:text-white ${activeSection === 'home' ? 'active' : ''}`}
-          >
-            Home
-          </a>
-          <a 
-            href="#products"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('products');
-            }}
-            className={`nav-link text-navy dark:text-white ${activeSection === 'products' ? 'active' : ''}`}
-          >
-            Products
-          </a>
-          <a 
-            href="#size-guide"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('size-guide');
-            }}
-            className={`nav-link text-navy dark:text-white ${activeSection === 'size-guide' ? 'active' : ''}`}
-          >
-            Size Guide
-          </a>
-          <a 
-            href="#benefits"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('benefits');
-            }}
-            className={`nav-link text-navy dark:text-white ${activeSection === 'benefits' ? 'active' : ''}`}
-          >
-            About Us
-          </a>
-          <a 
-            href="#reviews"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('reviews');
-            }}
-            className={`nav-link text-navy dark:text-white ${activeSection === 'reviews' ? 'active' : ''}`}
-          >
-            Reviews
-          </a>
-          <a 
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('contact');
-            }}
-            className={`nav-link text-navy dark:text-white ${activeSection === 'contact' ? 'active' : ''}`}
-          >
-            Contact
-          </a>
+          {navItems.map((item) => (
+            <Link
+              key={item.id}
+              to={item.path}
+              className={`nav-link text-navy dark:text-white ${
+                (location.pathname === item.path || 
+                 (location.pathname === '/' && activeSection === item.id)) 
+                ? 'active' : ''
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
         {/* Desktop Action Buttons */}
         <div className="hidden md:flex items-center space-x-4">
-          <Toggle 
-            aria-label="Toggle theme"
-            pressed={theme === 'dark'}
-            onPressedChange={toggleTheme}
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+            <Toggle 
+              aria-label="Toggle theme"
+              pressed={theme === 'dark'}
+              onPressedChange={toggleTheme}
+              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-grey-light dark:hover:bg-navy-light transition-colors"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {theme === 'dark' ? (
+                  <motion.div
+                    key="sun"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Sun className="w-5 h-5 text-gold" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="moon"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Moon className="w-5 h-5 text-navy" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </Toggle>
+          </motion.div>
+          
+          <motion.button 
             className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-grey-light dark:hover:bg-navy-light transition-colors"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {theme === 'dark' ? (
-              <Sun className="w-5 h-5 text-gold" />
-            ) : (
-              <Moon className="w-5 h-5 text-navy" />
-            )}
-          </Toggle>
-          <button className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-grey-light dark:hover:bg-navy-light transition-colors">
             <ShoppingCart className="w-5 h-5 text-navy dark:text-white" />
-          </button>
-          <button className="flex items-center space-x-2 btn-secondary py-2 dark:border-white dark:text-white dark:hover:bg-white/10">
+          </motion.button>
+          
+          <motion.button 
+            className="flex items-center space-x-2 btn-secondary py-2 dark:border-white dark:text-white dark:hover:bg-white/10"
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)"
+            }}
+            whileTap={{ scale: 0.98 }}
+          >
             <User className="w-4 h-4" />
             <span>Login</span>
-          </button>
+          </motion.button>
         </div>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center space-x-2">
-          <Toggle 
-            aria-label="Toggle theme"
-            pressed={theme === 'dark'}
-            onPressedChange={toggleTheme}
-            className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-grey-light dark:hover:bg-navy-light transition-colors"
-          >
-            {theme === 'dark' ? (
-              <Sun className="w-5 h-5 text-gold" />
-            ) : (
-              <Moon className="w-5 h-5 text-navy" />
-            )}
-          </Toggle>
-          <button 
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+            <Toggle 
+              aria-label="Toggle theme"
+              pressed={theme === 'dark'}
+              onPressedChange={toggleTheme}
+              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-grey-light dark:hover:bg-navy-light transition-colors"
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-gold" />
+              ) : (
+                <Moon className="w-5 h-5 text-navy" />
+              )}
+            </Toggle>
+          </motion.div>
+          
+          <motion.button 
             className="p-2 text-navy dark:text-white focus:outline-none"
             onClick={toggleMobileMenu}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          </motion.button>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      <div 
-        className={`fixed inset-0 bg-white dark:bg-navy-dark z-40 transform transition-transform duration-300 ease-in-out ${
-          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        } md:hidden pt-20 px-6`}
-      >
-        <nav className="flex flex-col space-y-6 text-lg">
-          <a 
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('home');
-            }}
-            className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div 
+            className="fixed inset-0 bg-white dark:bg-navy-dark z-40 pt-20 px-6 md:hidden overflow-y-auto"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 20, stiffness: 250 }}
           >
-            Home
-          </a>
-          <a 
-            href="#products"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('products');
-            }}
-            className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
-          >
-            Products
-          </a>
-          <a 
-            href="#size-guide"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('size-guide');
-            }}
-            className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
-          >
-            Size Guide
-          </a>
-          <a 
-            href="#benefits"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('benefits');
-            }}
-            className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
-          >
-            About Us
-          </a>
-          <a 
-            href="#reviews"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('reviews');
-            }}
-            className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
-          >
-            Reviews
-          </a>
-          <a 
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('contact');
-            }}
-            className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
-          >
-            Contact
-          </a>
-          <div className="flex space-x-4 pt-4">
-            <button className="btn-secondary flex-1 dark:border-white dark:text-white dark:hover:bg-white/10">Login</button>
-            <button className="btn-primary flex-1 dark:bg-gold dark:hover:bg-gold-dark">Sign Up</button>
-          </div>
-        </nav>
-      </div>
+            <nav className="flex flex-col space-y-6 text-lg mt-10">
+              {navItems.map((item) => (
+                <Link
+                  key={item.id}
+                  to={item.path}
+                  className="py-2 border-b border-grey-light dark:border-navy-light text-navy dark:text-white"
+                  onClick={closeMobileMenu}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              
+              <div className="flex space-x-4 pt-4">
+                <button className="btn-secondary flex-1 dark:border-white dark:text-white dark:hover:bg-white/10">Login</button>
+                <button className="btn-primary flex-1 dark:bg-gold dark:hover:bg-gold-dark">Sign Up</button>
+              </div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

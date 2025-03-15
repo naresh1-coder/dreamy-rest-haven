@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const ProductCategories = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -59,6 +60,29 @@ const ProductCategories = () => {
     };
   }, []);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 50, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12
+      }
+    }
+  };
+
   return (
     <section id="products" ref={sectionRef} className="py-20 bg-grey-light dark:bg-navy-light relative overflow-hidden">
       {/* Decorative Elements */}
@@ -67,34 +91,54 @@ const ProductCategories = () => {
       
       <div className="container-padding">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <motion.div 
+          className="text-center max-w-2xl mx-auto mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+        >
           <span className="text-gold text-sm font-medium tracking-wider uppercase">Our Collection</span>
           <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4 dark:text-white">Premium Mattress Types</h2>
           <p className="text-navy/70 dark:text-white/70 text-balance">
             Discover our range of premium mattresses designed to suit your specific sleeping preferences and needs.
           </p>
-        </div>
+        </motion.div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isVisible ? "visible" : "hidden"}
+        >
           {products.map((product, index) => (
-            <div 
+            <motion.div 
               key={product.id}
-              className={`card group hover:translate-y-[-5px] ${
-                isVisible ? 'animate-fade-in' : 'opacity-0'
-              } dark:bg-navy dark:border-navy-light`}
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="card group hover:translate-y-[-5px] dark:bg-navy dark:border-navy-light overflow-hidden"
+              variants={itemVariants}
+              whileHover={{ 
+                y: -8,
+                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
+                transition: { type: "spring", stiffness: 300, damping: 15 }
+              }}
             >
               <div className="relative overflow-hidden h-56">
-                <img 
+                <motion.img 
                   src={product.image} 
                   alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover"
+                  whileHover={{ scale: 1.08 }}
+                  transition={{ duration: 0.5 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/20 to-transparent opacity-70"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                <motion.div 
+                  className="absolute bottom-0 left-0 right-0 p-4 text-white"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
+                >
                   <h3 className="text-xl font-bold mb-1">{product.name}</h3>
-                </div>
+                </motion.div>
               </div>
               <div className="p-6">
                 <p className="text-navy/70 dark:text-white/70 mb-4 text-balance">{product.description}</p>
@@ -109,21 +153,37 @@ const ProductCategories = () => {
                     ))}
                   </ul>
                 </div>
-                <button className="flex items-center text-navy dark:text-white hover:text-gold dark:hover:text-gold transition-colors font-medium group">
+                <motion.button 
+                  className="flex items-center text-navy dark:text-white hover:text-gold dark:hover:text-gold transition-colors font-medium group"
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
                   <span>Explore</span>
                   <ArrowRight size={16} className="ml-2 transition-transform group-hover:translate-x-1" />
-                </button>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* CTA */}
-        <div className="text-center mt-16">
-          <button className="btn-primary dark:bg-gold dark:hover:bg-gold-dark">
+        <motion.div 
+          className="text-center mt-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.6, duration: 0.7 }}
+        >
+          <motion.button 
+            className="btn-primary dark:bg-gold dark:hover:bg-gold-dark"
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)"
+            }}
+            whileTap={{ scale: 0.98 }}
+          >
             View All Products
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
     </section>
   );

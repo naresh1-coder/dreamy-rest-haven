@@ -1,11 +1,18 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    // Mark as loaded after a short delay to allow for animations
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 500);
+
     const parallaxEffect = () => {
       if (heroRef.current) {
         const scrollPosition = window.scrollY;
@@ -18,7 +25,10 @@ const Hero = () => {
     };
 
     window.addEventListener('scroll', parallaxEffect);
-    return () => window.removeEventListener('scroll', parallaxEffect);
+    return () => {
+      window.removeEventListener('scroll', parallaxEffect);
+      clearTimeout(timer);
+    };
   }, []);
 
   const scrollToProducts = () => {
@@ -26,6 +36,23 @@ const Hero = () => {
     if (productsSection) {
       productsSection.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  // Animation variants for text animation
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
 
   return (
@@ -36,48 +63,112 @@ const Hero = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-navy/40 to-navy/10 dark:from-navy-dark/70 dark:to-navy-dark/40 z-10"></div>
-        <div 
+        <motion.div 
           className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1587922546307-776227941871?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2592&q=80')] 
                    bg-cover bg-center z-0"
-          style={{ transform: 'scale(1.1)' }}
-        ></div>
+          initial={{ scale: 1.2, opacity: 0.5 }}
+          animate={{ scale: 1.1, opacity: 1 }}
+          transition={{ duration: 1.5 }}
+          style={{ transformOrigin: "center center" }}
+        ></motion.div>
       </div>
 
       {/* Content */}
-      <div 
+      <motion.div 
         ref={heroRef}
         className="container-padding relative z-20 text-center text-white"
+        variants={container}
+        initial="hidden"
+        animate="show"
       >
         <div className="max-w-3xl mx-auto">
-          <span className="inline-block px-4 py-1 mb-6 bg-gold/90 backdrop-blur-sm rounded-full text-sm font-medium animate-fade-in-fast">
+          <motion.span 
+            className="inline-block px-4 py-1 mb-6 bg-gold/90 backdrop-blur-sm rounded-full text-sm font-medium"
+            variants={item}
+          >
             Experience Unmatched Comfort
-          </span>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in-fast tracking-tight">
+          </motion.span>
+          
+          <motion.h1 
+            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
+            variants={item}
+          >
             Perfect Sleep, <br /> Perfect <span className="text-gold">Mattress</span>
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 mb-10 max-w-xl mx-auto text-balance animate-fade-in-fast delay-100">
+          </motion.h1>
+          
+          <motion.p 
+            className="text-lg md:text-xl text-white/90 mb-10 max-w-xl mx-auto text-balance"
+            variants={item}
+          >
             Discover luxury comfort with our premium mattresses designed for your perfect night's sleep.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-fast delay-200">
-            <button className="btn-gold w-full sm:w-auto">
+          </motion.p>
+          
+          <motion.div 
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            variants={item}
+          >
+            <motion.button 
+              className="btn-gold w-full sm:w-auto hover:scale-105 transition-transform"
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: "0px 10px 20px rgba(212, 175, 55, 0.2)"
+              }}
+              whileTap={{ scale: 0.98 }}
+            >
               Shop Now
-            </button>
-            <button className="btn-secondary border-white text-white hover:bg-white/10 w-full sm:w-auto">
+            </motion.button>
+            
+            <motion.button 
+              className="btn-secondary border-white text-white hover:bg-white/10 w-full sm:w-auto"
+              whileHover={{ 
+                scale: 1.05,
+                backgroundColor: "rgba(255, 255, 255, 0.1)"
+              }}
+              whileTap={{ scale: 0.98 }}
+            >
               Explore Collection
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Scroll Down Button */}
-      <button 
+      <motion.button 
         className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 
-                   text-white animate-bounce hidden md:flex flex-col items-center"
+                  text-white hidden md:flex flex-col items-center"
         onClick={scrollToProducts}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ 
+          opacity: isLoaded ? 1 : 0, 
+          y: isLoaded ? 0 : -20
+        }}
+        transition={{ 
+          delay: 1.2,
+          duration: 0.5
+        }}
       >
-        <span className="text-sm mb-2">Scroll Down</span>
-        <ChevronDown size={20} />
-      </button>
+        <motion.span 
+          className="text-sm mb-2"
+          animate={{ y: [0, 5, 0] }}
+          transition={{ 
+            repeat: Infinity,
+            duration: 1.5,
+            ease: "easeInOut" 
+          }}
+        >
+          Scroll Down
+        </motion.span>
+        <motion.div
+          animate={{ y: [0, 5, 0] }}
+          transition={{ 
+            repeat: Infinity,
+            duration: 1.5,
+            ease: "easeInOut" 
+          }}
+        >
+          <ChevronDown size={20} />
+        </motion.div>
+      </motion.button>
     </section>
   );
 };

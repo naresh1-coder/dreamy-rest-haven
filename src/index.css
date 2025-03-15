@@ -85,6 +85,10 @@
     @apply bg-white text-navy font-sans transition-colors duration-300;
   }
 
+  body.theme-transition {
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
   .dark body {
     @apply bg-navy-dark text-white;
   }
@@ -117,6 +121,10 @@
            font-medium tracking-wide;
   }
 
+  .dark .btn-gold {
+    @apply shadow-[0_0_10px_rgba(212,175,55,0.3)];
+  }
+
   .card {
     @apply bg-white dark:bg-navy rounded-lg shadow-md transition-all duration-300 overflow-hidden
            hover:shadow-lg;
@@ -133,12 +141,17 @@
   .text-balance {
     text-wrap: balance;
   }
+  
+  .masked-overflow {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
 }
 
-/* Hover effect for links */
+/* Enhanced Hover effect for links */
 .nav-link {
   position: relative;
-  @apply transition-colors duration-300 px-4 py-2;
+  @apply transition-colors duration-300 px-4 py-2 font-medium;
 }
 
 .nav-link::after {
@@ -158,6 +171,16 @@
 
 .nav-link.active::after {
   width: 100%;
+}
+
+.nav-link:hover {
+  @apply text-gold dark:text-gold;
+}
+
+/* Enhanced button hover effects */
+button:hover {
+  transform: translateY(-2px);
+  transition: transform 0.3s ease;
 }
 
 /* Custom scrollbar */
@@ -194,4 +217,61 @@
     opacity: 1;
     transform: translateY(0);
   }
+  
+  /* New animations */
+  .hover-tilt {
+    transition: transform 0.3s ease;
+  }
+  
+  .hover-tilt:hover {
+    transform: perspective(1000px) rotateX(2deg) rotateY(2deg);
+  }
+  
+  .hover-glow {
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .hover-glow:hover {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+  }
+  
+  .dark .hover-glow:hover {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+  }
+}
+
+/* Text animation for letter-by-letter appearance */
+.text-appear span {
+  opacity: 0;
+  animation: fadeInLetter 0.05s forwards;
+}
+
+@keyframes fadeInLetter {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Soft transition for text */
+.text-soft {
+  @apply transition-all duration-300;
+}
+
+.dark .text-soft {
+  @apply text-gray-200;
+}
+
+/* Enhanced card hover effect */
+.enhanced-card {
+  @apply transition-all duration-300;
+}
+
+.enhanced-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  @apply shadow-xl;
+}
+
+/* Glow effect for dark mode buttons */
+.dark .glow-on-hover:hover {
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4), 0 0 30px rgba(212, 175, 55, 0.2);
 }
